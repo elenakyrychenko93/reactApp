@@ -320,21 +320,9 @@ let Add = React.createClass({
             agreeNotChecked: true,
             authorIsEmpty: true,
             textIsEmpty: true,
-            // formIsOpened: false
+            bigTextIsEmpty: true
         };
     },
-
-
-    // openForm: function(e) {
-    //     e.preventDefault();
-    //     this.setState({formIsOpened: true})
-    //
-    // },
-    // closeForm: function(e) {
-    //     e.preventDefault();
-    //     this.setState({formIsOpened: false})
-    // },
-
 
     componentDidMount: function() {
         ReactDOM.findDOMNode(this.refs.author).focus();
@@ -345,17 +333,18 @@ let Add = React.createClass({
 
         let author = ReactDOM.findDOMNode(this.refs.author).value;
         let text = textEl.value;
+        let bigText = ReactDOM.findDOMNode(this.refs.bigText).value;
 
         let item = [{
             author: author,
             text: text,
-            bigText: '...'
+            bigText: bigText
         }];
 
         window.ee.emit('News.add', item);
 
-        textEl.value = '';
-        this.setState({textIsEmpty: true});
+        // textEl.value = '';
+        // this.setState({textIsEmpty: true});
     },
     onCheckRuleClick: function(e) {
         this.setState({agreeNotChecked: !this.state.agreeNotChecked});
@@ -370,7 +359,8 @@ let Add = React.createClass({
     render: function() {
         let agreeNotChecked = this.state.agreeNotChecked,
             authorIsEmpty = this.state.authorIsEmpty,
-            textIsEmpty = this.state.textIsEmpty;
+            textIsEmpty = this.state.textIsEmpty,
+            bigTextIsEmpty = this.state.bigTextIsEmpty;
             // formIsOpened = this.state.formIsOpened;
         return (
             <form className='add cf'>
@@ -384,8 +374,14 @@ let Add = React.createClass({
                 <textarea
                     className='add__text'
                     onChange={this.onFieldChange.bind(this, 'textIsEmpty')}
-                    placeholder='Текст новости'
+                    placeholder='Превью текст'
                     ref='text'
+                ></textarea>
+                <textarea
+                    className='add__bigText'
+                    onChange={this.onFieldChange.bind(this, 'bigTextIsEmpty')}
+                    placeholder='Текст новости'
+                    ref='bigText'
                 ></textarea>
                 <label className='add__checkrule'>
                     <input type='checkbox' ref='checkrule' onChange={this.onCheckRuleClick}/>Я согласен с правилами
@@ -395,7 +391,7 @@ let Add = React.createClass({
                     className='add__btn'
                     onClick={this.onBtnClickHandler}
                     ref='alert_button'
-                    disabled={agreeNotChecked || authorIsEmpty || textIsEmpty}
+                    disabled={agreeNotChecked || authorIsEmpty || textIsEmpty || bigTextIsEmpty}
                 >
                     Опубликовать новость
                 </button>
@@ -412,43 +408,43 @@ let OpenAddForm = React.createClass({
             formIsOpened: false
         };
     },
-    openForm: function(e) {
+    // openForm: function(e) {
+    //     e.preventDefault();
+    //     this.setState({formIsOpened: true})
+    //
+    // },
+    // closeForm: function(e) {
+    //     e.preventDefault();
+    //     this.setState({formIsOpened: false})
+    // },
+    toggleForm: function(e) {
         e.preventDefault();
+        if(this.state.formIsOpened) {
+            this.setState({formIsOpened: false})
+        } else
         this.setState({formIsOpened: true})
-
-    },
-    closeForm: function(e) {
-        e.preventDefault();
-        this.setState({formIsOpened: false})
     },
     render : function() {
         let formIsOpened = this.state.formIsOpened,
-            buttonToOpen = "Open Form",
-            buttonToClose = "Close Form";
-        let form;
+            buttonText,
+            form,
+            button;
 
 
         if(this.state.formIsOpened) {
             form =  <Add />
+            buttonText = "Close Form"
         } else {
-            form = ""
+            form = null
+            buttonText = "Open Form"
         }
 
         return (
             <div>
-
-                <div className="openFormButton">
-                    <button onClick={this.openForm}
-                            className={'open__form ' + (formIsOpened ? 'none': '')}
-                    >{buttonToOpen}</button>
-
-
-                    <button onClick={this.closeForm}
-                            className={'close__form ' + (formIsOpened ? '': 'none')}
-                    >{buttonToClose}</button>
-                </div>
+                <button onClick={this.toggleForm}
+                            className='open__form '
+                >{buttonText}</button>
                 {form}
-
             </div>
 
 

@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 .none {
   display: none !important;
 }
@@ -13,4 +16,44 @@ h1 {
 .news__author {
   font-size: 20px;
   font-weight: bold;
+}
+.add.cf {
+  width: 300px;
+  padding: 20px;
+  margin: auto;
+
+
+}
+.add__author, textarea {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  font-family: Arial;
+
+}
+.add__btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 15px;
+  transition: .3s;
+}
+.add__btn:hover {
+  box-shadow: 1px 1px 15px 1px rgba(132, 127, 127, 0.5019607843137255);
+}
+.open__form, .close__form {
+  padding:10px 15px;
+  min-width: 240px;
+  text-align: center;
+  border: 1px solid gray;
+  color: white;
+  font-weight: bold;
+  transition: .3s;
+
+}
+.open__form {
+  background-color: #06c306;
+
+}
+.close__form {
+  background-color: deepskyblue;
 }

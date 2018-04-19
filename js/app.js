@@ -231,6 +231,32 @@ let my_news = [
         bigText: 'На самом деле платно, просто нужно прочитать очень длинное лицензионное соглашение'
     }
 ];
+let articles =[];
+
+
+
+// get articles
+$( document ).ready(function() {
+    $.ajax({
+        url: 'https://react-96d2f.firebaseio.com/articles.json',
+        type: 'GET',
+        dataType: "json",
+        success: function (data) {
+
+            for (let i in data) {
+                articles.push(data[i]);
+            }
+            console.log(articles); // vse ok
+
+
+        }
+
+    });
+
+});
+console.log(articles); //pustoi massiv ????????
+
+
 
 window.ee = new EventEmitter();
 
@@ -242,6 +268,10 @@ let Article = React.createClass({
             text: React.PropTypes.string.isRequired,
             bigText: React.PropTypes.string.isRequired
         })
+    },
+    componentDidMount: function() {
+
+
     },
     getInitialState: function() {
         return {
@@ -459,7 +489,7 @@ let OpenAddForm = React.createClass({
 let App = React.createClass({
     getInitialState: function() {
         return {
-            news: my_news
+            news: articles
         };
     },
     componentDidMount: function() {
@@ -473,7 +503,6 @@ let App = React.createClass({
         window.ee.removeListener('News.add');
     },
     render: function() {
-        console.log('render');
         return (
             <div className='app'>
                 <OpenAddForm />

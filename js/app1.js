@@ -260,6 +260,40 @@ let articles =[];
 
 window.ee = new EventEmitter();
 
+let ArticlesList = React.createClass({
+    getInitialState: function() {
+        return {
+            succesResponse: false
+        };
+    },
+    componentDidMount: function() {
+        $.ajax({
+            url: 'https://react-96d2f.firebaseio.com/articles.json',
+            type: 'GET',
+            dataType: "json",
+            success: function (data) {
+
+                // for (let i in data) {
+                //     articles.push(data[i]);
+                // }
+                this.setState({articles: data})
+                console.log(articles);
+
+
+            }
+
+        });
+
+    },
+    render: function() {
+        let succesResponse = this.state.succesResponse;
+        return (
+            <div key={index}>
+                <Article data={item} />
+            </div>
+        )
+    }
+});
 
 let Article = React.createClass({
     propTypes: {
@@ -270,10 +304,7 @@ let Article = React.createClass({
         })
     },
 
-    componentDidMount: function() {
 
-
-    },
     getInitialState: function() {
         return {
             visible: false
@@ -323,21 +354,23 @@ let News = React.createClass({
         let data = this.props.data;
         let newsTemplate;
 
-        if (data.length > 0) {
-            newsTemplate = data.map(function(item, index) {
-                return (
-                    <div key={index}>
-                        <Article data={item} />
-                    </div>
-                )
-            })
-        } else {
-            newsTemplate = <p>К сожалению новостей нет</p>
-        }
+        // if (data.length > 0) {
+        //     newsTemplate = data.map(function(item, index) {
+        //         return (
+        //             <ArticlesList />
+        //             /*<div key={index}>
+        //                 <Article data={item} />
+        //             </div>*/
+        //         )
+        //     })
+        // } else {
+        //     newsTemplate = <p>К сожалению новостей нет</p>
+        // }
 
         return (
             <div className='news'>
-                {newsTemplate}
+                /*{newsTemplate}*/
+                <ArticlesList />
                 <strong
                     className={'news__count ' + (data.length > 0 ? '':'none') }>Всего новостей: {data.length}</strong>
             </div>
@@ -490,7 +523,7 @@ let OpenAddForm = React.createClass({
 let App = React.createClass({
     getInitialState: function() {
         return {
-            news: my_news
+            news: articles
         };
     },
     componentDidMount: function() {
